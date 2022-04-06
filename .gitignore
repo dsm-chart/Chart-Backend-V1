@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+chart.eddx
+
+src/main/resources/application.yml

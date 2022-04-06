@@ -2,17 +2,12 @@ package com.chart.chart.infra.github.utils
 
 import com.chart.chart.infra.github.config.GithubProperties
 import com.chart.chart.infra.github.data.request.GithubAccessTokenRequest
-import com.chart.chart.infra.github.data.response.GithubUserInfoResponse
+import com.chart.chart.infra.github.data.dto.GithubUserInfoResponse
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.util.JSONPObject
 import org.springframework.http.*
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.exchange
-import org.springframework.web.client.postForEntity
-import java.net.HttpURLConnection
 import java.net.URI
-import java.net.URL
 
 
 @Component
