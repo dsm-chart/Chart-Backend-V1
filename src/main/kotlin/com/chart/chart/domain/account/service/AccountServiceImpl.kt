@@ -1,5 +1,6 @@
 package com.chart.chart.domain.account.service
 
+import com.chart.chart.domain.account.data.entity.RefreshToken
 import com.chart.chart.domain.account.data.entity.Role
 import com.chart.chart.domain.account.data.entity.School
 import com.chart.chart.domain.account.data.entity.User
@@ -7,9 +8,12 @@ import com.chart.chart.domain.account.data.request.LoginRequest
 import com.chart.chart.domain.account.data.request.SignupRequest
 import com.chart.chart.domain.account.data.response.MaximumUserResponse
 import com.chart.chart.domain.account.exception.UserNotFoundException
+import com.chart.chart.domain.account.repository.RefreshTokenRepository
 import com.chart.chart.domain.account.repository.UserRepository
 import com.chart.chart.global.exception.UserAlreadyExistsException
+import com.chart.chart.global.security.data.request.TokenRequest
 import com.chart.chart.global.security.data.response.TokenResponse
+import com.chart.chart.global.security.exception.InvalidTokenException
 import com.chart.chart.global.security.jwt.AccessTokenUtils
 import com.chart.chart.global.security.jwt.RefreshTokenUtils
 import com.chart.chart.global.utils.CurrentToken
@@ -22,9 +26,12 @@ class AccountServiceImpl(
     private val accessTokenUtils: AccessTokenUtils,
     private val refreshTokenUtils: RefreshTokenUtils,
     private val userRepository: UserRepository,
-    private val current: CurrentToken
+    private val current: CurrentToken,
+    private val refreshTokenRepository: RefreshTokenRepository
 
 ): AccountService {
+
+    private val REFRESH_EXPIRED = 120960000
 
     override fun signup(request: SignupRequest): TokenResponse {
         val userInfo = gitUtil.getUserInfoByAccessToken(
@@ -60,9 +67,29 @@ class AccountServiceImpl(
         throw UserNotFoundException(userInfo.id.toString())
     }
 
+    override fun reissue(request: TokenRequest): TokenResponse {
+        val userPk = accessTokenUtils.decode(request.accessToken).toInt()
+
+        val user = userRepository.findById(userPk).orElse(null)?: throw UserNotFoundException(userPk.toString())
+        val tokenResponse = provideToken(user.getId())
+        resetRefreshToken(tokenResponse.refreshToken, userPk.toString())
+
+        return tokenResponse
+    }
+
     override fun getMyInfo(): MaximumUserResponse {
         return current.getUser().toUserDto().toMaximumUserResponse()
     }
+
+    private fun resetRefreshToken(token: String, userPk: String) {
+        val refreshToken = refreshTokenRepository.findById(userPk)
+            .orElse(null)?: throw InvalidTokenException(token)
+
+        refreshToken.resetTokenExpiration(REFRESH_EXPIRED)
+
+        refreshTokenRepository.save(refreshToken)
+    }
+
 
     private fun provideToken(data: String): TokenResponse {
         return TokenResponse(
