@@ -3,9 +3,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.5.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id "org.sonarqube" version "3.3"
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
     kotlin("plugin.jpa") version "1.6.10"
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "dsm-chart_Chart-Backend-V1"
+    property "sonar.organization", "dsm-chart"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
 }
 
 group = "com.chart"
