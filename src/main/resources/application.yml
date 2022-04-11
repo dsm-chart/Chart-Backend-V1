@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${dbUserName}
+    password: ${dbPassword}
+    url: ${dbPath}
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    generate-ddl: false
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+github:
+  clientId: ${githubClientKey}
+  clientSecret: ${githubSecretKey}
+  accessTokenUrl: https://github.com/login/oauth/access_token
+  userInfoUrl: https://api.github.com/user
+
+jwt:
+  secretKey: ${jwtSecretKey}
+  accessExpiredAt: ${accessExpiredAt}
+  refreshExpiredAt: ${refreshExpiredAt}
+  mapKey: ${jwtMapKey}
+
+neis:
+  apiKey: ${neisApiKey}
