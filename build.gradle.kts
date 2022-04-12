@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.5.0"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id "org.sonarqube" version "3.3"
+    id("org.sonarqube") version "3.3"
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.10"
     kotlin("plugin.jpa") version "1.6.10"
@@ -11,11 +11,13 @@ plugins {
 
 sonarqube {
   properties {
-    property "sonar.projectKey", "dsm-chart_Chart-Backend-V1"
-    property "sonar.organization", "dsm-chart"
-    property "sonar.host.url", "https://sonarcloud.io"
+    property("sonar.projectKey", "dsm-chart_Chart-Backend-V1")
+    property("sonar.organization", "dsm-chart")
+    property("sonar.host.url", "https://sonarcloud.io")
   }
 }
+
+//1. 박민서 / 대덕소프트웨어마이스터고등학교 / 2학년 재학생 / msp05070478@gmail.com / 010-5125-5719 2. 남요셉 / 대덕소프트웨어마이스터고등학교 / 2학년 재학생 / yosebnam@gmail.com / 010-6360-7198
 
 group = "com.chart"
 version = "0.0.1-SNAPSHOT"
@@ -59,7 +61,8 @@ dependencies {
     //jackson
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.0")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.0")
-
+    //firebase
+    implementation("com.google.firebase:firebase-admin:7.1.0")
 
 }
 
