@@ -4,6 +4,7 @@ LABEL version="0.1"
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
+
 ENV dbUserName=${DB_USERNAME}
 RUN echo $dbUserName
 
