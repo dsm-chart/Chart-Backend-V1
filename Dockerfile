@@ -2,7 +2,6 @@ FROM openjdk:16
 LABEL title="Chart"
 LABEL version="0.1"
 
-RUN rm -r build
 RUN ./gradlew build
 
 ARG JAR_FILE=build/libs/*.jar
