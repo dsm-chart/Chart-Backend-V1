@@ -26,3 +26,7 @@ jwt:
 
 neis:
   apiKey: ${neisApiKey}
+
+fcm:
+  firebaseCreateScoped:
+  configPath:
