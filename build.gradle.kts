@@ -17,8 +17,6 @@ sonarqube {
   }
 }
 
-//1. 박민서 / 대덕소프트웨어마이스터고등학교 / 2학년 재학생 / msp05070478@gmail.com / 010-5125-5719 2. 남요셉 / 대덕소프트웨어마이스터고등학교 / 2학년 재학생 / yosebnam@gmail.com / 010-6360-7198
-
 group = "com.chart"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_16
