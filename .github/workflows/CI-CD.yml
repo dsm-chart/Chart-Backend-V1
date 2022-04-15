@@ -48,11 +48,12 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: 416747386774.dkr.ecr.ap-northeast-2.amazonaws.com/dsm-chart-backend
-        IMAGE_TAG: dsm-chart-backend
+        ECR_URI: ${{secrets.ECR_URI}}
+        ECR_REPOSITORY: dsm-chart-backend
+        IMAGE_TAG: lastest
       run: |
         docker buildx build --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_URI/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     - name: Get current time
