@@ -2,8 +2,6 @@ FROM openjdk:16
 LABEL title="Chart"
 LABEL version="0.1"
 
-RUN ./gradlew build
-
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
