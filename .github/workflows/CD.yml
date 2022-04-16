@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up JDK 16
         uses: actions/setup-java@v3
@@ -20,19 +20,10 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        
-      - name: checkBeforeGradle
-        run: ls -al
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test 
-
-      - name: checkAfterGradle
-        run: ls -al
         
-      - name: checkPwdAfterGradle
-        run: pwd
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -43,10 +34,7 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        
-      - name: checkPwdBeforeDocker
-        run: pwd
-        
+    
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
@@ -54,6 +42,8 @@ jobs:
           ECR_REPOSITORY: dsm-chart-backend
           IMAGE_TAG: latest
         run: |
+            pwd
+            cd /home/runner/work/Chart-Backend-V1/Chart-Backend-V1
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
