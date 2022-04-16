@@ -1,10 +1,10 @@
-FROM openjdk:16
-RUN cd ~/
+
+FROM openjdk:16-alpine3.13
 RUN ls -al
 ARG JAR_FILE=build/libs/*.jar
+RUN mkdir a
 RUN ls -al
-COPY ${JAR_FILE} a/app.jar
-FROM openjdk:16-alpine3.13
+COPY ${JAR_FILE} a/
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "a/app.jar"]
-
+RUN cd a
+ENTRYPOINT ["java", "-jar", "app.jar"] 
