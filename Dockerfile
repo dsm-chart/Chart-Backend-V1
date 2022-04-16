@@ -1,4 +1,3 @@
-RUN ls -al
 FROM openjdk:16
 RUN ls -al
 ARG JAR_FILE=*SNAPSHOT.jar
