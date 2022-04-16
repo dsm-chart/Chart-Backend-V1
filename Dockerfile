@@ -1,6 +1,6 @@
 FROM openjdk:16
 RUN ls -al
-ARG JAR_FILE=*SNAPSHOT.jar
+ARG JAR_FILE=build/libs/*.jar
 RUN ls -al
 COPY ${JAR_FILE} app.jar
 FROM openjdk:16-alpine3.13
