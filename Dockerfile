@@ -1,5 +1,6 @@
 FROM openjdk:16
-RUN pwd
+WORKDIR /home/runner/work/Chart-Backend-V1/Chart-Backend-V1
+
 ARG JAR_FILE=./build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 RUN pwd
