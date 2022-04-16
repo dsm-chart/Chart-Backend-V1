@@ -1,9 +1,11 @@
 FROM openjdk:16
-WORKDIR /home/runner/work/Chart-Backend-V1/Chart-Backend-V1
-
-ARG JAR_FILE=./build/libs/*.jar
-COPY ${JAR_FILE} app.jar
 RUN pwd
+WORKDIR /home/runner/work/Chart-Backend-V1/Chart-Backend-V1
+RUN pwd
+ARG JAR_FILE=./build/libs/*.jar
+RUN pwd
+COPY ${JAR_FILE} app.jar
+
 
 FROM openjdk:16-alpine3.13
 
