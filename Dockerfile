@@ -4,7 +4,6 @@ WORKDIR app
 ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} ./
-RUN ls -al
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "./"]
