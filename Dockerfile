@@ -7,4 +7,4 @@ COPY ${JAR_FILE} ./
 RUN ls -al
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", ${JAR_FILE}]
+ENTRYPOINT ["java", "-jar", "./"]
