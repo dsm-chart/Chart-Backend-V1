@@ -75,6 +75,8 @@ jobs:
         - name: Generate deployment package
           run: |
             mkdir -p deploy
+            pwd
+            ls -al
             cp Dockerrun.aws.json deploy/Dockerrun.aws.json
             cd deploy && zip -r deploy.zip .
 
