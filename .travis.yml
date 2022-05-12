@@ -35,9 +35,7 @@ deploy:
     local_dir: deploy
     wait-until-deployed: true
     on: 
-      branches: 
-        only:
-          - main
+      all_branches: true
     
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY
@@ -50,9 +48,7 @@ deploy:
     region: ap-northeast-2
     wait-until-deployed: true
     on: 
-      branches: 
-        only:
-          - main
+      all_branches: true
     
   
   
