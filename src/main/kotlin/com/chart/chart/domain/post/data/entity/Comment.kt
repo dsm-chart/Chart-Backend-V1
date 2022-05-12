@@ -30,7 +30,7 @@ class Comment(
         return MaximumCommentResponse(
             this.getId(),
             this.getContent(),
-            this.getWriter().toUserDto().toMaximumUserResponse(),
+            this.getWriter().toUserDto().toMinimumUserResponse(),
             (this.targetPost as Question).toMaximumQuestionResponse()
         )
     }

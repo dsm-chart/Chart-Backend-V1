@@ -1,12 +1,12 @@
 package com.chart.chart.domain.account.data.entity
 
 import com.chart.chart.domain.account.data.dto.UserDto
+import com.chart.chart.domain.post.data.entity.Post
+import com.chart.chart.domain.post.data.entity.Question
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
 class User(
@@ -39,8 +39,15 @@ class User(
     @UpdateTimestamp
     private val updatedAt: LocalDateTime? = null
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private val postList: MutableList<Post> = ArrayList()
+
     fun getId(): String {
         return this.id.toString()
+    }
+
+    fun addPost(post: Post) {
+        this.postList.add(post)
     }
 
     fun toUserDto(): UserDto{
@@ -51,7 +58,8 @@ class User(
             this.school,
             this.githubId,
             this.createdAt!!,
-            this.updatedAt!!
+            this.updatedAt!!,
+            this.postList.stream().filter{ it is Question }.map{ it as Question }.map { it.toQuestionDto() }.toList()
         )
     }
 

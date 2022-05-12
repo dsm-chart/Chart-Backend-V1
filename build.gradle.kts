@@ -61,7 +61,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.0")
     //firebase
     implementation("com.google.firebase:firebase-admin:7.1.0")
-
+    //swagger
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
 }
 
 tasks.withType<KotlinCompile> {

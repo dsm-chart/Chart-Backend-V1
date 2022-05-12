@@ -37,13 +37,17 @@ class CommentServiceImpl(
     override fun replyComment(request: ReplyCommentRequest) {
         val target = questionRepository.findById(request.targetId)
             .orElse(null)?:throw PostNotFoundException(request.targetId)
+        val user = current.getUser()
+        val comment = Comment(
+            UUID.randomUUID().toString(),
+            request.content,
+            user,
+            target
+        )
+
+        user.addPost(comment)
         commentRepository.save(
-            Comment(
-                UUID.randomUUID().toString(),
-                request.content,
-                current.getUser(),
-                target
-            )
+            comment
         )
 
     }

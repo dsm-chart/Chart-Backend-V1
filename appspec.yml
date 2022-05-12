@@ -7,6 +7,6 @@ files:
     
 hook:
   ApplicationStart:
-    - location: deploy.sh
+    - location: ~/app/step2/zip/deploy.sh
       timeout: 60
       runas: root

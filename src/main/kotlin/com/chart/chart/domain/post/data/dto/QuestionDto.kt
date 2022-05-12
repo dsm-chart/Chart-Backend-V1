@@ -2,6 +2,7 @@ package com.chart.chart.domain.post.data.dto
 
 import com.chart.chart.domain.account.data.entity.User
 import com.chart.chart.domain.post.data.response.MaximumQuestionResponse
+import com.chart.chart.domain.post.data.response.MinimumQuestionResponse
 
 data class QuestionDto(
     val id: String,
@@ -17,6 +18,13 @@ data class QuestionDto(
             this.title,
             this.content,
             this.writer.toUserDto().toMinimumUserResponse()
+        )
+    }
+
+    fun toMinimumQuestionResponse(): MinimumQuestionResponse {
+        return MinimumQuestionResponse(
+            this.title,
+            this.content
         )
     }
 

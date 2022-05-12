@@ -45,6 +45,4 @@ abstract class Post(
     fun getWriter(): User {
         return this.writer
     }
-
-
 }

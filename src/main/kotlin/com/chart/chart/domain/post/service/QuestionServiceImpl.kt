@@ -35,13 +35,17 @@ class QuestionServiceImpl(
     }
 
     override fun createQuestion(request: CreateQuestionRequest) {
+        val user = current.getUser()
+        val question = Question(
+            UUID.randomUUID().toString(),
+            request.title,
+            request.content,
+            user
+        )
+
+        user.addPost(question)
         questionRepository.save(
-            Question(
-                UUID.randomUUID().toString(),
-                request.title,
-                request.content,
-                current.getUser()
-            )
+            question
         )
     }
 

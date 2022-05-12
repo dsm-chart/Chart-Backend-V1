@@ -1,6 +1,8 @@
 package com.chart.chart.domain.account.data.response
 
 import com.chart.chart.domain.account.data.entity.School
+import com.chart.chart.domain.post.data.response.MaximumQuestionResponse
+import com.chart.chart.domain.post.data.response.MinimumQuestionResponse
 import java.time.LocalDateTime
 
 data class MaximumUserResponse(
@@ -10,6 +12,7 @@ data class MaximumUserResponse(
     val githubId: String,
     val school: School,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
+    val questionList: List<MinimumQuestionResponse>
 
 )
