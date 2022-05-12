@@ -19,3 +19,7 @@
 
 **Chart 개발팀 이름이 DaF랍니다!***
 >
+
+
+# Architecutre
+![architectrue](https://github.com/dsm-chart/Chart-Backend-V1/blob/main/chart-architecture.png)
