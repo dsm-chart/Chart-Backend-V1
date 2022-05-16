@@ -14,12 +14,6 @@ class TimetableController(
     private val timetableService: TimetableService
 ) {
 
-    @GetMapping("/test")
-    fun good(): String {
-        return "happy"
-    }
-
-
     @GetMapping("/today")
     fun getTodayTimetable(): ScheReturnResponseDayDto {
         return timetableService.getTodayTimetable()
