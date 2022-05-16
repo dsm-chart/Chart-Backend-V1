@@ -3,6 +3,8 @@ package com.chart.chart.global.security.filter
 import com.chart.chart.global.security.exception.InvalidTokenException
 import com.chart.chart.global.exception.base.response.ErrorResponse
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.jsonwebtoken.JwtException
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.filter.OncePerRequestFilter
 import javax.servlet.FilterChain
@@ -27,6 +29,15 @@ class JwtExceptionHandlerFilter(
             objectMapper.writeValue(response.writer, ErrorResponse(
                 e.errorCode.message,
                 e.errorCode.status,
+                "TokenException"
+            ))
+        } catch (e: JwtException) {
+            response.status = HttpStatus.BAD_REQUEST.value()
+            response.contentType = MediaType.APPLICATION_JSON_VALUE
+            response.characterEncoding = "UTF-8"
+            objectMapper.writeValue(response.writer, ErrorResponse(
+                    e.message!!,
+                    HttpStatus.BAD_REQUEST,
                 "TokenException"
             ))
         }
