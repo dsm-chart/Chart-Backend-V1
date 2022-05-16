@@ -6,12 +6,7 @@ files:
     overwrite: yes
     
 hook:
-
-  ApplicationStop:
-    - location: kill_scripts.sh
-  BeforeInstall:
-    - location: remove_before.sh
   ApplicationStart:
-    - location: run_process.sh
+    - location: deploy.sh
       timeout: 60
       runas: root
