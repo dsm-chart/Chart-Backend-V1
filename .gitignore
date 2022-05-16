@@ -43,3 +43,9 @@ chart.eddx
 chart-datagrip.uml
 
 chart-erd.png
+
+chart-architecture.pdf
+
+*.log
+
+*.pdf
