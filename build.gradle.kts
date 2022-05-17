@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.0"
+    id("org.springframework.boot") version "2.6.7"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.sonarqube") version "3.3"
     kotlin("jvm") version "1.6.10"
@@ -63,8 +63,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.0")
     //firebase
     implementation("com.google.firebase:firebase-admin:7.1.0")
-    //swagger
-    implementation("io.springfox:springfox-boot-starter:3.0.0")
+    //spring-doc
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.4")
 }
 
 tasks.withType<KotlinCompile> {
