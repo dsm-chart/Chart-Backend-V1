@@ -18,15 +18,12 @@ class JwtFilter(
     private val jwtUtils: AccessTokenUtils,
     private val customUserDetailsService: CustomUserDetailsService
 ) : OncePerRequestFilter() {
-    private val objectMapper = ObjectMapper()
-
-
-    @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+
         getToken(request)?.let {
             val subject = jwtUtils.decode(it)
             val userDetails = customUserDetailsService.loadUserByUsername(subject)
