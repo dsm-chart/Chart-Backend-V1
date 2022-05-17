@@ -7,6 +7,6 @@ files:
     
 hook:
   ApplicationStart:
-    - location: /home/ec2-user/app/travis/build/scripts/deploy.sh
+    - location: deploy.sh
       timeout: 60
       runas: ec2-user
