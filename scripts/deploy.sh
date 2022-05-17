@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/travis
-PROJECT_NAME=jaewon-study
+PROJECT_NAME=chart
 
 echo "> Build 파일 복사"
 

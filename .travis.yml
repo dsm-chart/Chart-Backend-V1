@@ -18,9 +18,9 @@ before_install:
   - "chmod +x gradlew"
 
 before_deploy: 
-  - zip -r Chart *
+  - zip -r chart *
   - mkdir -p deploy
-  - mv Chart.zip deploy/Chart.zip
+  - mv chart.zip deploy/chart.zip
   
 deploy:
   - provider: s3
