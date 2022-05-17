@@ -16,7 +16,7 @@ class TimetableController(
 
     @GetMapping("/test")
     fun test(): String {
-        return "test"
+        return "test입니다 2222"
     }
 
     @GetMapping("/today")
