@@ -2,11 +2,11 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/app/travis/build/
+    destination: /home/ec2-user/app/travis/build
     overwrite: yes
     
 hook:
   ApplicationStart:
-    - location: deploy.sh
+    - location: scripts/deploy.sh
       timeout: 60
       runas: ec2-user
