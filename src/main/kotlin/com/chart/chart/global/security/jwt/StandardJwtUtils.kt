@@ -1,7 +1,9 @@
 package com.chart.chart.global.security.jwt
 
 import com.chart.chart.global.env.property.JwtProperty
+import com.chart.chart.global.security.exception.InvalidTokenException
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import java.sql.Timestamp
@@ -22,11 +24,15 @@ abstract class StandardJwtUtils<T>(
     }
 
     override fun decode(token: String): T {
-        val data = Jwts.parser()
-            .setSigningKey(getSecretKey())
-            .parseClaimsJws(token)
-            .body
-        return getDataFromClaims(data)
+        try {
+            val data = Jwts.parser()
+                .setSigningKey(getSecretKey())
+                .parseClaimsJws(token)
+                .body
+            return getDataFromClaims(data)
+        } catch (e: JwtException) {
+            throw InvalidTokenException(e.message!!)
+        }
     }
 
 

@@ -1,8 +1,11 @@
 package com.chart.chart.global.env.config
 
+import com.chart.chart.global.security.filter.JwtExceptionHandlerFilter
 import com.chart.chart.global.security.filter.JwtFilter
 import com.chart.chart.global.security.jwt.AccessTokenUtils
 import com.chart.chart.global.security.service.CustomUserDetailsService
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.hibernate.internal.FilterConfiguration
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -14,11 +17,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
-@EnableWebSecurity
+
 @Configuration
+@EnableWebSecurity
 class SecurityConfig(
     private val jwtUtils: AccessTokenUtils,
-    private val customUserDetailsService: CustomUserDetailsService
+    private val customUserDetailsService: CustomUserDetailsService,
+    private val objectMapper: ObjectMapper
 ): WebSecurityConfigurerAdapter() {
 
 
@@ -41,17 +46,23 @@ class SecurityConfig(
     override fun configure(httpSecurity: HttpSecurity) {
         httpSecurity
             .csrf().disable()
-            .cors().disable()
+            .cors()
+
+            .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+
             .and()
             .authorizeRequests()
             .antMatchers(
                 "/api/**").permitAll()
             .antMatchers("/api/auth/code").hasRole("ADMIN")
-            .anyRequest().permitAll()
+            .anyRequest().denyAll()
+
             .and()
-            .addFilterBefore(JwtFilter(jwtUtils, customUserDetailsService), UsernamePasswordAuthenticationFilter::class.java)
+            .apply(FilterConfiguration(jwtUtils, customUserDetailsService, objectMapper))
+
     }
 
 }
