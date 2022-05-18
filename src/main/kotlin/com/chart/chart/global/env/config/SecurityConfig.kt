@@ -34,13 +34,10 @@ class SecurityConfig(
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
-        web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico")
-        web.ignoring().antMatchers(
-            "/v3/api-docs", "/configuration/ui", "/swagger-resources",
-            "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/api/auth/admin"
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**", "/api-docs.json"
+            , "/swagger-ui.html", "/api-docs/**"
         )
     }
-
 
     @Throws(Exception::class)
     override fun configure(httpSecurity: HttpSecurity) {
