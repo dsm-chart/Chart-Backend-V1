@@ -15,5 +15,6 @@ enum class ErrorCode(
     MEAL_EXCEPTION(HttpStatus.BAD_REQUEST, "Meal Exception"),
     EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "Expired Token!"),
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "Invalid Token!"),
+    NEED_TOKEN(HttpStatus.NOT_FOUND, "Token Not Found"),
 
 }
