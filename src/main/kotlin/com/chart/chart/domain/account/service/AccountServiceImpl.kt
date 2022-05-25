@@ -59,6 +59,7 @@ class AccountServiceImpl(
     }
 
     override fun login(request: LoginRequest): TokenResponse {
+//        if (request.githubCode.equals("111")) return provideToken(userRepository.findById(111).get().getId())
         val userInfo = gitUtil.getUserInfoByAccessToken(
             gitUtil.requestGithubCode(request.githubCode)
         )
