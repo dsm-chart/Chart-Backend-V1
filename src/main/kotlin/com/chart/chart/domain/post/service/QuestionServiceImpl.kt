@@ -1,6 +1,5 @@
 package com.chart.chart.domain.post.service
 
-import com.chart.chart.domain.account.data.response.MinimumUserResponse
 import com.chart.chart.domain.post.data.entity.Question
 import com.chart.chart.domain.post.data.request.CreateQuestionRequest
 import com.chart.chart.domain.post.data.request.EditQuestionRequest
@@ -29,6 +28,14 @@ class QuestionServiceImpl(
     override fun getQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse> {
         val questList = questionRepository.findAll(PageRequest.of(idx, size))
         if (questList.isEmpty) throw PostNotFoundException("Any Data Not Exists")
+        return questList.stream()
+            .map { it.toQuestionDto().toMaximumQuestionResponse() }
+            .toList()
+    }
+
+    override fun getMyQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse> {
+        val questList = questionRepository.findAllByWriter(current.getUser(), PageRequest.of(idx, size))
+        if (questList.isEmpty()) throw PostNotFoundException("Any Data Not Exists")
         return questList.stream()
             .map { it.toQuestionDto().toMaximumQuestionResponse() }
             .toList()

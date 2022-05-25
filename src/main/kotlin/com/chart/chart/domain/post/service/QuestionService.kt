@@ -9,6 +9,8 @@ interface QuestionService {
 
     fun getQuestion(id: String): MaximumQuestionResponse
     fun getQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse>
+
+    fun getMyQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse>
     fun createQuestion(request: CreateQuestionRequest)
     fun editQuestion(request: EditQuestionRequest)
     fun deleteQuestion(id: String)

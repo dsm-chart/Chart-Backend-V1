@@ -3,6 +3,7 @@ package com.chart.chart.domain.post.controller
 import com.chart.chart.domain.post.data.request.EditCommentRequest
 import com.chart.chart.domain.post.data.request.ReplyCommentRequest
 import com.chart.chart.domain.post.data.response.MaximumCommentResponse
+import com.chart.chart.domain.post.data.response.MinimumCommentListResponse
 import com.chart.chart.domain.post.data.response.MinimumCommentResponse
 import com.chart.chart.domain.post.service.CommentService
 import org.springframework.web.bind.annotation.*
@@ -20,8 +21,10 @@ class CommentController(
     }
 
     @GetMapping("/{postId}")
-    fun getCommentList(@PathVariable postId: String): List<MinimumCommentResponse> {
-        return commentService.getCommentList(postId)
+    fun getCommentList(@PathVariable postId: String): MinimumCommentListResponse {
+        return MinimumCommentListResponse(
+            commentService.getCommentList(postId)
+        )
     }
 
     @PostMapping

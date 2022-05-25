@@ -2,6 +2,7 @@ package com.chart.chart.domain.post.controller
 
 import com.chart.chart.domain.post.data.request.CreateQuestionRequest
 import com.chart.chart.domain.post.data.request.EditQuestionRequest
+import com.chart.chart.domain.post.data.response.MaximumQuestionListResponse
 import com.chart.chart.domain.post.data.response.MaximumQuestionResponse
 import com.chart.chart.domain.post.service.QuestionService
 import org.springframework.web.bind.annotation.*
@@ -19,8 +20,17 @@ class QuestionController(
     }
 
     @GetMapping("/list")
-    fun getQuestionList(@RequestParam idx: Int, @RequestParam size: Int): List<MaximumQuestionResponse> {
-        return questionService.getQuestionList(idx, size)
+    fun getQuestionList(@RequestParam idx: Int, @RequestParam size: Int): MaximumQuestionListResponse {
+        return MaximumQuestionListResponse(
+            questionService.getQuestionList(idx, size)
+        )
+    }
+
+    @GetMapping("/my")
+    fun getMyQuestionList(@RequestParam idx: Int, @RequestParam size: Int): MaximumQuestionListResponse {
+        return MaximumQuestionListResponse(
+            questionService.getMyQuestionList(idx, size)
+        )
     }
 
     @PostMapping

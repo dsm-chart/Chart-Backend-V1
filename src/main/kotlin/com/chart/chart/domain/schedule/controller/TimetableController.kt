@@ -1,5 +1,6 @@
 package com.chart.chart.domain.schedule.controller
 
+import com.chart.chart.domain.schedule.dto.ScheReturnResponseListDayDto
 import com.chart.chart.domain.schedule.service.TimetableService
 import neiseApi.payload.sche.ScheReturnResponseDayDto
 import org.springframework.web.bind.annotation.GetMapping
@@ -25,8 +26,10 @@ class TimetableController(
     }
 
     @GetMapping
-    fun getTimetable(@RequestParam start: Int, end: Int): List<ScheReturnResponseDayDto> {
-        return timetableService.getTimetable(start, end)
+    fun getTimetable(@RequestParam start: Int, end: Int): ScheReturnResponseListDayDto {
+        return ScheReturnResponseListDayDto(
+            timetableService.getTimetable(start, end)
+        )
     }
 
 }
