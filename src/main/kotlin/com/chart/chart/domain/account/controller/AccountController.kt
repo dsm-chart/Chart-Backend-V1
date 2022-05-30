@@ -1,14 +1,15 @@
 package com.chart.chart.domain.account.controller
 
+import com.chart.chart.domain.account.data.request.CheckGithubIdRequest
 import com.chart.chart.domain.account.data.request.LoginRequest
 import com.chart.chart.domain.account.data.request.SignupRequest
+import com.chart.chart.domain.account.data.response.CheckGithubIdResponse
 import com.chart.chart.domain.account.data.response.MaximumUserResponse
 import com.chart.chart.domain.account.service.AccountService
 import com.chart.chart.global.security.data.request.TokenRequest
 import com.chart.chart.global.security.data.response.TokenResponse
-import com.chart.chart.infra.github.utils.GithubOAuthUtil
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.annotation.CurrentSecurityContext
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 
@@ -39,15 +40,13 @@ class AccountController(
         return accountService.reissue(request)
     }
 
-    @GetMapping("/test/cred")
-    fun testCred(@CurrentSecurityContext(expression = "authentication.credentials") good: String): String {
-        return good
+    @PutMapping("/check")
+    fun checkOauth(@RequestBody request: CheckGithubIdRequest): CheckGithubIdResponse {
+        return CheckGithubIdResponse(
+            accountService.checkGithubToken(request)
+        )
     }
 
-    @GetMapping("/test/all")
-    fun testKey(@CurrentSecurityContext(expression = "authentication") good: Authentication): Authentication {
-        return good
-    }
 
 
 }

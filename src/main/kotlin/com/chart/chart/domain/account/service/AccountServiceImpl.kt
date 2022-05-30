@@ -1,9 +1,9 @@
 package com.chart.chart.domain.account.service
 
-import com.chart.chart.domain.account.data.entity.RefreshToken
 import com.chart.chart.domain.account.data.entity.Role
 import com.chart.chart.domain.account.data.entity.School
 import com.chart.chart.domain.account.data.entity.User
+import com.chart.chart.domain.account.data.request.CheckGithubIdRequest
 import com.chart.chart.domain.account.data.request.LoginRequest
 import com.chart.chart.domain.account.data.request.SignupRequest
 import com.chart.chart.domain.account.data.response.MaximumUserResponse
@@ -80,6 +80,14 @@ class AccountServiceImpl(
 
     override fun getMyInfo(): MaximumUserResponse {
         return current.getUser().toUserDto().toMaximumUserResponse()
+    }
+
+    override fun checkGithubToken(request: CheckGithubIdRequest): Boolean {
+        val userInfo = gitUtil.getUserInfoByAccessToken(
+            gitUtil.requestGithubCode(request.githubCode)
+        )
+        userRepository.findById(userInfo.id).orElse(null)?: return true
+        return false
     }
 
     private fun resetRefreshToken(token: String, userPk: String) {

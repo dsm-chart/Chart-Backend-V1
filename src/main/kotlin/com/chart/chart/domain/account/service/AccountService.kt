@@ -1,5 +1,6 @@
 package com.chart.chart.domain.account.service
 
+import com.chart.chart.domain.account.data.request.CheckGithubIdRequest
 import com.chart.chart.domain.account.data.request.LoginRequest
 import com.chart.chart.domain.account.data.request.SignupRequest
 import com.chart.chart.domain.account.data.response.MaximumUserResponse
@@ -13,5 +14,7 @@ interface AccountService {
     fun reissue(request: TokenRequest): TokenResponse
 
     fun getMyInfo():  MaximumUserResponse
+
+    fun checkGithubToken(request: CheckGithubIdRequest): Boolean
 
 }

@@ -18,10 +18,10 @@ class GithubOAuthUtil(
 
     private val restTemplate = RestTemplate()
     private val PREFIX = "Bearer "
+    private var url: URI = URI(prop.getAccessTokenUrl())
 
     fun requestGithubCode(code: String): String {
 
-        val url: URI = URI(prop.getAccessTokenUrl())
         val response = restTemplate.postForEntity(url,
             GithubAccessTokenRequest(
                 prop.getClientId(),
