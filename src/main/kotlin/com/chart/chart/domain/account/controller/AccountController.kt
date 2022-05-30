@@ -48,5 +48,12 @@ class AccountController(
     }
 
 
+    @PostMapping("/test")
+    fun test(): String {
+        return "Test"
+    }
+
+
+
 
 }

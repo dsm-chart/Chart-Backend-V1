@@ -35,7 +35,7 @@ class AccountServiceImpl(
 
     override fun signup(request: SignupRequest): TokenResponse {
         val userInfo = gitUtil.getUserInfoByAccessToken(
-            gitUtil.requestGithubCode(request.githubCode)
+            request.accessToken
         )
         if (userRepository.findById(userInfo.id).isPresent) throw UserAlreadyExistsException(userInfo.login)
 
@@ -61,7 +61,8 @@ class AccountServiceImpl(
     override fun login(request: LoginRequest): TokenResponse {
 //        if (request.githubCode.equals("111")) return provideToken(userRepository.findById(111).get().getId())
         val userInfo = gitUtil.getUserInfoByAccessToken(
-            gitUtil.requestGithubCode(request.githubCode)
+            request.accessToken
+//            gitUtil.requestGithubCode(request.githubCode)
         )
         val optionalUser = userRepository.findById(userInfo.id)
         if (optionalUser.isPresent) return provideToken(optionalUser.get().getId())
@@ -84,7 +85,7 @@ class AccountServiceImpl(
 
     override fun checkGithubToken(request: CheckGithubIdRequest): Boolean {
         val userInfo = gitUtil.getUserInfoByAccessToken(
-            gitUtil.requestGithubCode(request.githubCode)
+            request.accessToken
         )
         userRepository.findById(userInfo.id).orElse(null)?: return true
         return false

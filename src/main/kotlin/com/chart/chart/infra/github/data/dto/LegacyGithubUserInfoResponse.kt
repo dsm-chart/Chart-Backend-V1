@@ -10,7 +10,7 @@ import java.util.*
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-data class GithubUserInfoResponse (
+data class LegacyGithubUserInfoResponse (
     @JsonProperty("login")
     var login: String,
     @JsonProperty("id")
