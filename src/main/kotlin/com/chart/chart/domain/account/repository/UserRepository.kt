@@ -4,7 +4,7 @@ import com.chart.chart.domain.account.data.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
-interface UserRepository: JpaRepository<User, Int> {
+interface UserRepository: JpaRepository<User, Long> {
 
     fun findByGithubId(githubId: String): Optional<User>
 

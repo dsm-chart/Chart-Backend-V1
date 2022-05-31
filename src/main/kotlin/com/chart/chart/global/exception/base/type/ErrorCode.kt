@@ -16,5 +16,6 @@ enum class ErrorCode(
     EXPIRED_TOKEN(HttpStatus.BAD_REQUEST, "Expired Token!"),
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "Invalid Token!"),
     NEED_TOKEN(HttpStatus.NOT_FOUND, "Token Not Found"),
+    GITHUB_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Github UnAuthorizeException")
 
 }

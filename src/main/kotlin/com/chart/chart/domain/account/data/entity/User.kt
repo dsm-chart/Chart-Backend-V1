@@ -10,7 +10,7 @@ import javax.persistence.*
 
 @Entity
 class User(
-    id: Int,
+    id: Long,
     githubId: String,
     school: School,
     name: String,
@@ -20,7 +20,7 @@ class User(
 ) {
 
     @Id
-    private val id: Int = id
+    private val id: Long = id
 
     private val githubId: String = githubId
 

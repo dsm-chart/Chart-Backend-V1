@@ -13,9 +13,9 @@ class CurrentToken(
     private val userRepository: UserRepository
 ) {
 
-    fun getTokenCredentials(): Int {
+    fun getTokenCredentials(): Long {
         try {
-            return SecurityContextHolder.getContext().authentication.credentials.toString().toInt()
+            return SecurityContextHolder.getContext().authentication.credentials.toString().toLong()
         } catch (e: java.lang.Exception) {
             throw NeedTokenException()
         }

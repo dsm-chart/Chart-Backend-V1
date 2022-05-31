@@ -70,7 +70,7 @@ class AccountServiceImpl(
     }
 
     override fun reissue(request: TokenRequest): TokenResponse {
-        val userPk = accessTokenUtils.decode(request.accessToken).toInt()
+        val userPk = accessTokenUtils.decode(request.accessToken).toLong()
 
         val user = userRepository.findById(userPk).orElse(null)?: throw UserNotFoundException(userPk.toString())
         val tokenResponse = provideToken(user.getId())
@@ -87,8 +87,8 @@ class AccountServiceImpl(
         val userInfo = gitUtil.getUserInfoByAccessToken(
             request.accessToken
         )
-        userRepository.findById(userInfo.id).orElse(null)?: return true
-        return false
+        userRepository.findById(userInfo.id).orElse(null)?: return false
+        return true
     }
 
     private fun resetRefreshToken(token: String, userPk: String) {

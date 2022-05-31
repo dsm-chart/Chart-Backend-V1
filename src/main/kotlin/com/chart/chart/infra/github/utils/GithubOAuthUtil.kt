@@ -2,6 +2,8 @@ package com.chart.chart.infra.github.utils
 
 import com.chart.chart.infra.github.config.GithubProperties
 import com.chart.chart.infra.github.data.dto.LegacyGithubUserInfoResponse
+import com.chart.chart.infra.github.data.dto.NewGithubUserInfoResponse
+import com.chart.chart.infra.github.exception.GithubUnAuthorizeException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.*
 import org.springframework.stereotype.Component
@@ -37,15 +39,15 @@ class GithubOAuthUtil(
 //        return res.substring(res.indexOf("=") + 1, res.indexOf("&"))
 //    }
 
-    fun getUserInfoByAccessToken(accessToken: String): LegacyGithubUserInfoResponse {
+    fun getUserInfoByAccessToken(accessToken: String): NewGithubUserInfoResponse {
         val url = URI(prop.getUserInfoUrl())
         val headers = HttpHeaders()
         headers.set("Authorization", PREFIX + accessToken)
         val entity: HttpEntity<String> = HttpEntity<String>("", headers)
         val response = restTemplate.exchange(url, HttpMethod.GET, entity, String::class.java)
-        println(response)
+        if (response.statusCode.equals(HttpStatus.UNAUTHORIZED)) throw GithubUnAuthorizeException("")
         val mapper = ObjectMapper()
-        val resp = mapper.readValue(response.body, LegacyGithubUserInfoResponse::class.java)
+        val resp = mapper.readValue(response.body, NewGithubUserInfoResponse::class.java)
 
         return resp
     }
