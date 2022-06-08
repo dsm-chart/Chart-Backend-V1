@@ -5,10 +5,15 @@ import com.chart.chart.domain.post.data.entity.Post
 import com.chart.chart.domain.post.data.entity.Question
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.domain.Persistable
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@EntityListeners(AuditingEntityListener::class)
 class User(
     id: Long,
     githubId: String,
@@ -17,7 +22,7 @@ class User(
     role: Role,
     bio: String?
 
-) {
+): Persistable<Long> {
 
     @Id
     private val id: Long = id
@@ -31,19 +36,23 @@ class User(
 
     private val role: Role = role
 
-    private val bio: String? = bio
+    val bio: String? = bio
 
-    @CreationTimestamp
-    private val createdAt: LocalDateTime? = null
+    @CreatedDate
+    var createdAt: LocalDateTime? = null
 
-    @UpdateTimestamp
-    private val updatedAt: LocalDateTime? = null
+    @LastModifiedDate
+    var updatedAt: LocalDateTime? = null
 
     @OneToMany(fetch = FetchType.LAZY)
     private val postList: MutableList<Post> = ArrayList()
 
-    fun getId(): String {
-        return this.id.toString()
+    override fun getId(): Long {
+        return this.id
+    }
+
+    override fun isNew(): Boolean {
+        return this.createdAt == null
     }
 
     fun addPost(post: Post) {
