@@ -39,21 +39,21 @@ class AccountServiceImpl(
         )
         if (userRepository.findById(userInfo.id).isPresent) throw UserAlreadyExistsException(userInfo.login)
 
-        userRepository.save(
-            User(
-                userInfo.id,
-                userInfo.login,
-                School(
-                    request.schoolCode,
-                    request.areaCode,
-                    request.grade,
-                    request.classNum
-                ),
-                userInfo.name,
-                Role.COMMON,
-                userInfo.bio
-            )
+        var user = User(
+            (userInfo.id).toLong(),
+            userInfo.login,
+            School(
+                request.schoolCode,
+                request.areaCode,
+                request.grade,
+                request.classNum
+            ),
+            userInfo.name,
+            Role.COMMON,
+            userInfo.bio
         )
+
+        userRepository.save(user)
 
         return provideToken(userInfo.id.toString())
     }
@@ -65,7 +65,7 @@ class AccountServiceImpl(
 //            gitUtil.requestGithubCode(request.githubCode)
         )
         val optionalUser = userRepository.findById(userInfo.id)
-        if (optionalUser.isPresent) return provideToken(optionalUser.get().getId())
+        if (optionalUser.isPresent) return provideToken(optionalUser.get().getId().toString())
         throw UserNotFoundException(userInfo.id.toString())
     }
 
@@ -73,7 +73,7 @@ class AccountServiceImpl(
         val userPk = accessTokenUtils.decode(request.accessToken).toLong()
 
         val user = userRepository.findById(userPk).orElse(null)?: throw UserNotFoundException(userPk.toString())
-        val tokenResponse = provideToken(user.getId())
+        val tokenResponse = provideToken(user.getId().toString())
         resetRefreshToken(tokenResponse.refreshToken, userPk.toString())
 
         return tokenResponse

@@ -68,7 +68,7 @@ class QuestionServiceImpl(
     override fun deleteQuestion(id: String) {
         val question = questionRepository.findById(id).orElse(null) ?: throw PostNotFoundException(id)
         val user = current.getUser()
-        if (question.getWriter().equals(user)) throw IsNotPostWriterException(user.getId())
+        if (question.getWriter().equals(user)) throw IsNotPostWriterException(user.getId().toString())
         questionRepository.delete(question)
     }
 

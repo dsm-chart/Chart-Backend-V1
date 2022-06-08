@@ -14,7 +14,8 @@ import java.time.format.DateTimeFormatter
 @Component
 class TimetableUtil(
     private val neisProperty: NeisProperty,
-    private val current: CurrentToken
+    private val current: CurrentToken,
+    private val school: School
 ) {
 
     fun getTodayTimetable(): ScheReturnResponseDayDto {
@@ -23,7 +24,7 @@ class TimetableUtil(
     }
 
     fun getTimetable(start: Int, end: Int): List<ScheReturnResponseDayDto> {
-        val school: School = School(neisProperty.apiKey)
+
         val user = current.getUser()
         try {
             return school.getSchoolSchedule(
