@@ -14,7 +14,7 @@ class CustomUserDetailsService(
 
 
     override fun loadUserByUsername(username: String): CustomUserDetails {
-        return userRepository.findByGithubId(username).map { CustomUserDetails() }
+        return userRepository.findById(username.toLong()).map { CustomUserDetails() }
             .orElse(null) ?: throw UserNotFoundException(username)
     }
 }
