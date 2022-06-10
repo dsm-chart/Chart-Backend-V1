@@ -1,5 +1,6 @@
 package com.chart.chart.domain.account.service
 
+import com.chart.chart.domain.account.data.entity.RefreshToken
 import com.chart.chart.domain.account.data.entity.Role
 import com.chart.chart.domain.account.data.entity.School
 import com.chart.chart.domain.account.data.entity.User
@@ -33,7 +34,7 @@ class AccountServiceImpl(
 
     private val REFRESH_EXPIRED = 120960000
 
-    override fun signup(request: SignupRequest): TokenResponse {
+    override fun signup(request: SignupRequest) {
         val userInfo = gitUtil.getUserInfoByAccessToken(
             request.accessToken
         )
@@ -55,7 +56,7 @@ class AccountServiceImpl(
 
         userRepository.save(user)
 
-        return provideToken(userInfo.id.toString())
+
     }
 
     override fun login(request: LoginRequest): TokenResponse {
@@ -102,9 +103,17 @@ class AccountServiceImpl(
 
 
     private fun provideToken(data: String): TokenResponse {
+        val refreshToken = refreshTokenUtils.encode(data)
+        refreshTokenRepository.save(
+            RefreshToken(
+                data,
+                refreshToken,
+                REFRESH_EXPIRED
+            )
+        )
         return TokenResponse(
             accessTokenUtils.encode(data),
-            refreshTokenUtils.encode(data)
+            refreshToken
         )
     }
 

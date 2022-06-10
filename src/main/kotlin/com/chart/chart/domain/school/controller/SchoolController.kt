@@ -1,9 +1,7 @@
 package com.chart.chart.domain.school.controller
 
-import com.chart.chart.domain.school.dto.SchoolSearchResponse
 import com.chart.chart.domain.school.service.SchoolService
 import neiseApi.payload.schoolInfo.SchoolShorten
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -19,5 +17,7 @@ class SchoolController(
     fun searchSchool(@RequestParam school: String): List<SchoolShorten> {
         return schoolService.searchSchool(school)
     }
+
+
 
 }

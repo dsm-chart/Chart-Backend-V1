@@ -26,8 +26,8 @@ class AccountController(
     }
 
     @PostMapping("/signup")
-    fun githubOAuthSignup(@RequestBody request: SignupRequest): TokenResponse {
-        return accountService.signup(request)
+    fun githubOAuthSignup(@RequestBody request: SignupRequest) {
+        accountService.signup(request)
     }
 
     @GetMapping("/my")

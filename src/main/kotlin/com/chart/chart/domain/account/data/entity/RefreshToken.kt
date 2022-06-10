@@ -14,11 +14,11 @@ class RefreshToken(
 ) {
 
     @Id
-    private val id: String = id
+    val id: String = id
     @Indexed
-    private var token: String = token
+    var token: String = token
     @TimeToLive
-    private var ttl = ttl
+    var ttl = ttl
 
     fun getRefreshToken(): String {
         return this.token

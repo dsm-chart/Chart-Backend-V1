@@ -31,7 +31,7 @@ abstract class StandardJwtUtils<T>(
                 .body
             return getDataFromClaims(data)
         } catch (e: JwtException) {
-            throw InvalidTokenException(e.message!!)
+            throw InvalidTokenException(e.message.toString())
         }
     }
 
