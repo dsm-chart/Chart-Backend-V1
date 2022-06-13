@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 @RestController
@@ -15,14 +19,20 @@ class TimetableController(
     private val timetableService: TimetableService
 ) {
 
-    @GetMapping("/test")
-    fun test(): String {
-        return "test입니다 2222"
-    }
 
     @GetMapping("/today")
     fun getTodayTimetable(): ScheReturnResponseDayDto {
         return timetableService.getTodayTimetable()
+    }
+
+    @GetMapping("/week")
+    fun getWeekTimetable(): ScheReturnResponseListDayDto {
+        val today = LocalDate.now()
+        val mon = today.with(DayOfWeek.MONDAY).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        val fri = today.with(DayOfWeek.FRIDAY).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return ScheReturnResponseListDayDto(
+            timetableService.getTimetable(mon.toInt(), fri.toInt())
+        )
     }
 
     @GetMapping
