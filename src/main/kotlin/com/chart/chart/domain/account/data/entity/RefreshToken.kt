@@ -24,7 +24,8 @@ class RefreshToken(
         return this.token
     }
 
-    fun resetTokenExpiration(ttl: Int) {
+    fun resetTokenExpiration(token: String, ttl: Int) {
+        this.token = token
         this.ttl = ttl
     }
 
