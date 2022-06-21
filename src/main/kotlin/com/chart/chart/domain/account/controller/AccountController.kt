@@ -30,6 +30,11 @@ class AccountController(
         accountService.signup(request)
     }
 
+    @PostMapping("/signup/code")
+    fun githubOAuthSignupWithCode(@RequestBody request: SignupRequest) {
+        accountService.signupWithToken(request)
+    }
+
     @GetMapping("/my")
     fun getMyInfo(): MaximumUserResponse {
         return accountService.getMyInfo()

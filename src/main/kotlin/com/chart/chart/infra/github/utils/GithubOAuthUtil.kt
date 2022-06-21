@@ -1,7 +1,12 @@
 package com.chart.chart.infra.github.utils
 
+import com.chart.chart.domain.account.data.entity.Role
+import com.chart.chart.domain.account.data.entity.School
+import com.chart.chart.domain.account.data.entity.User
 import com.chart.chart.infra.github.config.GithubProperties
 import com.chart.chart.infra.github.data.dto.NewGithubUserInfoResponse
+import com.chart.chart.infra.github.data.dto.RepoGithubUserInfoResponse
+import com.chart.chart.infra.github.data.request.GithubAccessTokenRequest
 import com.chart.chart.infra.github.exception.GithubUnAuthorizeException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.*
@@ -22,40 +27,58 @@ class GithubOAuthUtil(
     private val PREFIX = "Bearer "
     private val url: URI = URI(prop.getAccessTokenUrl())
 
-//    fun requestGithubCode(code: String): String {
-//
-//        println("CLIENTID: ${prop.getClientId()} \n SECRET: ${prop.getClientSecret()}\n CODE: $code\n")
-//        val response = restTemplate.postForEntity(url,
-//            GithubAccessTokenRequest(
-//                prop.getClientId(),
-//                prop.getClientSecret(),
-//                code
-//            ),
-//            String::class.java
-//        )
-//        println(response)
-//
-//        val res: String = (response.body).toString()
-//        println(res)
-//        return res.substring(res.indexOf("=") + 1, res.indexOf("&"))
-//    }
+    fun requestAccessTokenWithGithubCode(code: String): String {
+        val response = restTemplate.postForEntity(
+            url,
+            GithubAccessTokenRequest(
+                prop.getClientId(),
+                prop.getClientSecret(),
+                code
+            ),
+            String::class.java
+        )
 
-    fun getUserInfoByAccessToken(accessToken: String): NewGithubUserInfoResponse {
+        val res: String = (response.body).toString()
+        val token = res.substring(res.indexOf("=") + 1, res.indexOf("&"))
+        return token
+    }
+
+    fun getUserInfoByAccessToken(accessToken: String): User {
         val url = URI(prop.getUserInfoUrl())
         val headers = HttpHeaders()
-        headers.set("Authorization", PREFIX + accessToken)
+        val auth = PREFIX + accessToken
+        headers.set("Authorization", auth)
         val entity: HttpEntity<String> = HttpEntity<String>("", headers)
         var response = Any()
         try {
             response = restTemplate.exchange(url, HttpMethod.GET, entity, String::class.java)
         } catch (e: HttpClientErrorException) {
+            println(e.message)
             throw GithubUnAuthorizeException(accessToken)
-        } catch (e: java.lang.Exception) {
-            throw e
         }
-        val mapper = ObjectMapper()
 
-        return mapper.readValue(response.body, NewGithubUserInfoResponse::class.java)
+        val mapper = ObjectMapper()
+        try {
+            val userInfo = mapper.readValue(response.body, NewGithubUserInfoResponse::class.java)
+
+            return User(
+                (userInfo.id),
+                userInfo.login,
+                userInfo.name,
+                Role.COMMON,
+                userInfo.bio
+            )
+        } catch (e: Exception) {
+            val userInfo = mapper.readValue(response.body, RepoGithubUserInfoResponse::class.java)
+
+            return User(
+                (userInfo.id),
+                userInfo.login,
+                userInfo.name,
+                Role.COMMON,
+                userInfo.bio
+            )
+        }
     }
 
 }

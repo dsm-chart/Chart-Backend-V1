@@ -10,6 +10,7 @@ import com.chart.chart.global.security.data.response.TokenResponse
 interface AccountService {
 
     fun signup(request: SignupRequest)
+    fun signupWithToken(request: SignupRequest)
     fun login(request: LoginRequest): TokenResponse
     fun reissue(request: TokenRequest): TokenResponse
 

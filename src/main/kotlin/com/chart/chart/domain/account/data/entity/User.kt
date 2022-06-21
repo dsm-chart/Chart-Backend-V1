@@ -1,6 +1,7 @@
 package com.chart.chart.domain.account.data.entity
 
 import com.chart.chart.domain.account.data.dto.UserDto
+import com.chart.chart.domain.account.data.request.SignupRequest
 import com.chart.chart.domain.post.data.entity.Post
 import com.chart.chart.domain.post.data.entity.Question
 import org.hibernate.annotations.CreationTimestamp
@@ -17,7 +18,6 @@ import javax.persistence.*
 class User(
     id: Long,
     githubId: String,
-    school: School,
     name: String,
     role: Role,
     bio: String?
@@ -27,12 +27,14 @@ class User(
     @Id
     private val id: Long = id
 
-    private val githubId: String = githubId
+    val githubId: String = githubId
 
     @Embedded
-    private val school: School = school
+    private var school: School? = null
 
-    private val name: String = name
+
+    var name: String = name
+        protected set
 
     private val role: Role = role
 
@@ -64,7 +66,7 @@ class User(
             this.id.toString(),
             this.name,
             this.bio,
-            this.school,
+            this.school!!,
             this.githubId,
             this.createdAt!!,
             this.updatedAt!!,
@@ -73,7 +75,16 @@ class User(
     }
 
     fun getSchool(): School {
-        return this.school
+        return this.school!!
+    }
+
+    fun setSchool(request: SignupRequest) {
+        this.school = School(
+            request.schoolCode,
+            request.areaCode,
+            request.grade,
+            request.classNum
+        )
     }
 
     fun getRole(): Role {

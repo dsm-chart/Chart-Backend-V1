@@ -20,6 +20,7 @@ import com.chart.chart.global.security.jwt.RefreshTokenUtils
 import com.chart.chart.global.utils.CurrentToken
 import com.chart.chart.infra.github.utils.GithubOAuthUtil
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class AccountServiceImpl(
@@ -35,24 +36,21 @@ class AccountServiceImpl(
     private val REFRESH_EXPIRED = 120960000
 
     override fun signup(request: SignupRequest) {
-        val userInfo = gitUtil.getUserInfoByAccessToken(
+        val user = gitUtil.getUserInfoByAccessToken(
             request.accessToken
         )
-        if (userRepository.findById(userInfo.id).isPresent) throw UserAlreadyExistsException(userInfo.login)
+        if (userRepository.findById(user.id).isPresent) throw UserAlreadyExistsException(user.githubId)
+        user.setSchool(request)
 
-        var user = User(
-            (userInfo.id),
-            userInfo.login,
-            School(
-                request.schoolCode,
-                request.areaCode,
-                request.grade,
-                request.classNum
-            ),
-            userInfo.name,
-            Role.COMMON,
-            userInfo.bio
-        )
+        userRepository.save(user)
+    }
+
+    @Transactional
+    override fun signupWithToken(request: SignupRequest) {
+        var token = gitUtil.requestAccessTokenWithGithubCode(request.accessToken)
+        val user: User = gitUtil.getUserInfoByAccessToken(token)
+        if (userRepository.findById(user.id).isPresent) throw UserAlreadyExistsException(user.githubId)
+        user.setSchool(request)
 
         userRepository.save(user)
     }
