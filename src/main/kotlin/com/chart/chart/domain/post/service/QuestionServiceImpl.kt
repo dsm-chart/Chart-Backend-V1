@@ -9,6 +9,7 @@ import com.chart.chart.domain.post.exception.PostNotFoundException
 import com.chart.chart.domain.post.repository.QuestionRepository
 import com.chart.chart.global.utils.CurrentToken
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -16,7 +17,7 @@ import java.util.*
 @Service
 class QuestionServiceImpl(
     private val questionRepository: QuestionRepository,
-    private val current: CurrentToken
+    private val current: CurrentToken,
 
 ): QuestionService {
 
@@ -26,8 +27,8 @@ class QuestionServiceImpl(
     }
 
     override fun getQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse> {
-        val questList = questionRepository.findAll(PageRequest.of(idx, size))
-        if (questList.isEmpty) throw PostNotFoundException("Any Data Not Exists")
+        val questList = questionRepository.findAll(PageRequest.of(idx, size, Sort.by("createdAt").descending()))
+//        if (questList.isEmpty) throw PostNotFoundException("Any Data Not Exists")
         return questList.stream()
             .map { it.toQuestionDto().toMaximumQuestionResponse() }
             .toList()

@@ -1,15 +1,9 @@
 package com.chart.chart.infra.github.data.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import lombok.AllArgsConstructor
-import lombok.Builder
-import lombok.NoArgsConstructor
 import java.util.*
 
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 data class LegacyGithubUserInfoResponse (
     @JsonProperty("login")
     var login: String,

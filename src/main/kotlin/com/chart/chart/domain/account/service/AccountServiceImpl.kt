@@ -41,7 +41,7 @@ class AccountServiceImpl(
         if (userRepository.findById(userInfo.id).isPresent) throw UserAlreadyExistsException(userInfo.login)
 
         var user = User(
-            (userInfo.id).toLong(),
+            (userInfo.id),
             userInfo.login,
             School(
                 request.schoolCode,
@@ -55,8 +55,6 @@ class AccountServiceImpl(
         )
 
         userRepository.save(user)
-
-
     }
 
     override fun login(request: LoginRequest): TokenResponse {

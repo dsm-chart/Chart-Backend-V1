@@ -6,6 +6,6 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConstructorBinding
 @ConfigurationProperties("fcm")
 data class FcmProperty(
-    val firebaseCreateScoped: String,
-    val configPath: String
+    val firebaseCreateScoped: String?,
+    val configPath: String?
 )

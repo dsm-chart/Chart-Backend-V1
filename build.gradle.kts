@@ -3,68 +3,59 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.6.7"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.sonarqube") version "3.3"
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.spring") version "1.6.10"
-    kotlin("plugin.jpa") version "1.6.10"
-}
-
-sonarqube {
-  properties {
-    property("sonar.projectKey", "dsm-chart_Chart-Backend-V1")
-    property("sonar.organization", "dsm-chart")
-    property("sonar.host.url", "https://sonarcloud.io")
-  }
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
+    kotlin("plugin.jpa") version "1.6.21"
 }
 
 group = "com.chart"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_16
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
-
-    maven { url = uri("https://www.jitpack.io" ) }
+    maven(url = "https://jitpack.io")
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude(module = "spring-boot-starter-tomcat")
-    }
-    implementation("org.springframework.boot:spring-boot-starter-undertow")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("mysql:mysql-connector-java")
-    annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.2.2")
-    compileOnly("org.projectlombok:lombok:1.18.12")
-    annotationProcessor("org.projectlombok:lombok:1.18.12")
+    //WebStarter
+    implementation("org.springframework.boot:spring-boot-starter-web"){
+        exclude(module = "spring-boot-starter-tomcat")
+    }
+    //undertow
+    implementation("org.springframework.boot:spring-boot-starter-undertow")
+    //batch
+    implementation("org.springframework.boot:spring-boot-starter-batch")
+    //Mysql
+    runtimeOnly("mysql:mysql-connector-java")
+    //Komoran
+    implementation("com.github.shin285:KOMORAN:3.3.4")
+    //Validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    //AWS
+    implementation("org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE")
+    //Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    //Jwts
     implementation("io.jsonwebtoken:jjwt:0.9.1")
+    //data jpa
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    //Jackson
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    //mailing
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    //thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    //redis
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
-    implementation("org.apache.logging.log4j:log4j-api:2.17.0")
-    //neis API
-    implementation("com.github.AppS01u7E:NeisApi:0.04.00")
-    implementation("io.github.leeseojune53:neis-api:1.0.3")
-    //jackson
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.0")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.0")
-    //firebase
-    implementation("com.google.firebase:firebase-admin:7.1.0")
     //spring-doc
     implementation("org.springdoc:springdoc-openapi-ui:1.6.4")
+    implementation("io.github.leeseojune53:neis-api:1.0.3")
+    implementation("com.github.AppS01u7E:NeisApi:0.04.00")
 }
 
 tasks.withType<KotlinCompile> {
@@ -74,21 +65,10 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 tasks.getByName<Jar>("jar") {
     enabled = false
 }
 
-allOpen {
-    annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
-}
-noArg {
-    annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
