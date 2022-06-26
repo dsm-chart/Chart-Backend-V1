@@ -6,6 +6,6 @@ import neiseApi.payload.sche.ScheReturnResponseDayDto
 
 interface CafeteriaService {
 
-    fun getMeal(meal: String): Meal
+    fun getMeal(date: String): Meal
 
 }

@@ -20,16 +20,15 @@ import java.net.URI
 @Component
 class GithubOAuthUtil(
     private val prop: GithubProperties
-
 ) {
 
     private val restTemplate = RestTemplate()
     private val PREFIX = "Bearer "
-    private val url: URI = URI(prop.getAccessTokenUrl())
+    private val ACCESS_TOKEN_URL = URI(prop.getAccessTokenUrl())
 
     fun requestAccessTokenWithGithubCode(code: String): String {
         val response = restTemplate.postForEntity(
-            url,
+            ACCESS_TOKEN_URL,
             GithubAccessTokenRequest(
                 prop.getClientId(),
                 prop.getClientSecret(),
@@ -49,7 +48,7 @@ class GithubOAuthUtil(
         val auth = PREFIX + accessToken
         headers.set("Authorization", auth)
         val entity: HttpEntity<String> = HttpEntity<String>("", headers)
-        var response = Any()
+        var response: ResponseEntity<*>
         try {
             response = restTemplate.exchange(url, HttpMethod.GET, entity, String::class.java)
         } catch (e: HttpClientErrorException) {
@@ -58,27 +57,30 @@ class GithubOAuthUtil(
         }
 
         val mapper = ObjectMapper()
+        var user: User
         try {
             val userInfo = mapper.readValue(response.body, NewGithubUserInfoResponse::class.java)
-
-            return User(
+            user = User(
                 (userInfo.id),
                 userInfo.login,
-                userInfo.name,
+                userInfo.name?:userInfo.login,
                 Role.COMMON,
                 userInfo.bio
             )
-        } catch (e: Exception) {
+        } catch (e: HttpClientErrorException) {
             val userInfo = mapper.readValue(response.body, RepoGithubUserInfoResponse::class.java)
-
-            return User(
+            user = User(
                 (userInfo.id),
                 userInfo.login,
-                userInfo.name,
+                userInfo.name?:userInfo.login,
                 Role.COMMON,
                 userInfo.bio
             )
+        } catch (e: java.lang.Exception) {
+            throw GithubUnAuthorizeException(e.message.toString())
         }
+
+        return user
     }
 
 }

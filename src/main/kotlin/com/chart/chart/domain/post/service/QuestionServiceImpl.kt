@@ -8,6 +8,7 @@ import com.chart.chart.domain.post.exception.IsNotPostWriterException
 import com.chart.chart.domain.post.exception.PostNotFoundException
 import com.chart.chart.domain.post.repository.QuestionRepository
 import com.chart.chart.global.utils.CurrentToken
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -26,20 +27,16 @@ class QuestionServiceImpl(
         return quest.toQuestionDto().toMaximumQuestionResponse()
     }
 
-    override fun getQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse> {
+    override fun getQuestionList(idx: Int, size: Int): Page<MaximumQuestionResponse> {
         val questList = questionRepository.findAll(PageRequest.of(idx, size, Sort.by("createdAt").descending()))
 //        if (questList.isEmpty) throw PostNotFoundException("Any Data Not Exists")
-        return questList.stream()
-            .map { it.toQuestionDto().toMaximumQuestionResponse() }
-            .toList()
+        return questList.map { it.toQuestionDto().toMaximumQuestionResponse() }
     }
 
-    override fun getMyQuestionList(idx: Int, size: Int): List<MaximumQuestionResponse> {
+    override fun getMyQuestionList(idx: Int, size: Int): Page<MaximumQuestionResponse> {
         val questList = questionRepository.findAllByWriter(current.getUser(), PageRequest.of(idx, size))
         if (questList.isEmpty()) throw PostNotFoundException("Any Data Not Exists")
-        return questList.stream()
-            .map { it.toQuestionDto().toMaximumQuestionResponse() }
-            .toList()
+        return questList.map { it.toQuestionDto().toMaximumQuestionResponse() }
     }
 
     override fun createQuestion(request: CreateQuestionRequest) {

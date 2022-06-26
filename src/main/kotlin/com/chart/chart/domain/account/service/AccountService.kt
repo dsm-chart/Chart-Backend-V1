@@ -12,6 +12,7 @@ interface AccountService {
     fun signup(request: SignupRequest)
     fun signupWithToken(request: SignupRequest)
     fun login(request: LoginRequest): TokenResponse
+    fun loginWithToken(request: LoginRequest): TokenResponse
     fun reissue(request: TokenRequest): TokenResponse
 
     fun getMyInfo():  MaximumUserResponse

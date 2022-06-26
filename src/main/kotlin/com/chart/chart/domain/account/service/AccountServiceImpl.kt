@@ -18,6 +18,7 @@ import com.chart.chart.global.security.exception.InvalidTokenException
 import com.chart.chart.global.security.jwt.AccessTokenUtils
 import com.chart.chart.global.security.jwt.RefreshTokenUtils
 import com.chart.chart.global.utils.CurrentToken
+import com.chart.chart.infra.github.exception.GithubUnAuthorizeException
 import com.chart.chart.infra.github.utils.GithubOAuthUtil
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -47,12 +48,16 @@ class AccountServiceImpl(
 
     @Transactional
     override fun signupWithToken(request: SignupRequest) {
-        var token = gitUtil.requestAccessTokenWithGithubCode(request.accessToken)
-        val user: User = gitUtil.getUserInfoByAccessToken(token)
-        if (userRepository.findById(user.id).isPresent) throw UserAlreadyExistsException(user.githubId)
-        user.setSchool(request)
+        try {
+            var token = gitUtil.requestAccessTokenWithGithubCode(request.accessToken)
+            val user: User = gitUtil.getUserInfoByAccessToken(token)
+            if (userRepository.findById(user.id).isPresent) throw UserAlreadyExistsException(user.githubId)
+            user.setSchool(request)
 
-        userRepository.save(user)
+            userRepository.save(user)
+        } catch (e: Exception) {
+            throw GithubUnAuthorizeException(e.message.toString())
+        }
     }
 
     override fun login(request: LoginRequest): TokenResponse {
@@ -64,6 +69,18 @@ class AccountServiceImpl(
         val optionalUser = userRepository.findById(userInfo.id)
         if (optionalUser.isPresent) return provideToken(optionalUser.get().id.toString())
         throw UserNotFoundException(userInfo.id.toString())
+    }
+
+    override fun loginWithToken(request: LoginRequest): TokenResponse {
+        try {
+            var token = gitUtil.requestAccessTokenWithGithubCode(request.accessToken)
+            val user: User = gitUtil.getUserInfoByAccessToken(token)
+            val optionalUser = userRepository.findById(user.id)
+            if (optionalUser.isPresent) return provideToken(optionalUser.get().id.toString())
+            throw UserNotFoundException(user.id.toString())
+        } catch (e: Exception) {
+            throw GithubUnAuthorizeException(e.message.toString())
+        }
     }
 
     override fun reissue(request: TokenRequest): TokenResponse {

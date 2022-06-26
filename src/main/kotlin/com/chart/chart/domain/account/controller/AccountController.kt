@@ -25,6 +25,12 @@ class AccountController(
         return accountService.login(request)
     }
 
+    @PostMapping("/login/code")
+    fun githubOAuthLoginWithToken(@RequestBody request: LoginRequest): TokenResponse {
+        return accountService.loginWithToken(request)
+    }
+
+
     @PostMapping("/signup")
     fun githubOAuthSignup(@RequestBody request: SignupRequest) {
         accountService.signup(request)
@@ -52,11 +58,6 @@ class AccountController(
         )
     }
 
-
-    @PostMapping("/test")
-    fun test(): String {
-        return "Test"
-    }
 
 
 

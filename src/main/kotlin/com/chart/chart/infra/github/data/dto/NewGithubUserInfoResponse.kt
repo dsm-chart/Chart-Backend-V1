@@ -12,7 +12,7 @@ data class NewGithubUserInfoResponse(
     @JsonProperty("avatar_url")
     val avatarURL: String,
     @JsonProperty("gravatar_id")
-    val gravatarID: String,
+    val gravatarID: String?,
     @JsonProperty("url")
     val url: String,
     @JsonProperty("html_url")
@@ -26,59 +26,59 @@ data class NewGithubUserInfoResponse(
     @JsonProperty("starred_url")
     val starredURL: String,
     @JsonProperty("subscriptions_url")
-    val subscriptionsURL: String,
+    val subscriptionsURL: String?,
     @JsonProperty("organizations_url")
-    val organizationsURL: String,
+    val organizationsURL: String?,
     @JsonProperty("repos_url")
-    val reposURL: String,
+    val reposURL: String?,
     @JsonProperty("events_url")
-    val eventsURL: String,
+    val eventsURL: String?,
     @JsonProperty("received_events_url")
-    val receivedEventsURL: String,
+    val receivedEventsURL: String?,
     @JsonProperty("type")
-    val type: String,
+    val type: String?,
     @JsonProperty("site_admin")
-    val siteAdmin: Boolean,
+    val siteAdmin: Boolean?,
     @JsonProperty("name")
-    val name: String,
+    val name: String? ,
     @JsonProperty("company")
-    val company: String,
+    val company: String?,
     @JsonProperty("blog")
-    val blog: String,
+    val blog: String?,
     @JsonProperty("location")
-    val location: String,
+    val location: String?,
     @JsonProperty("email")
-    val email: String,
+    val email: String?,
     @JsonProperty("hireable")
     val hireable: Any? = null,
     @JsonProperty("bio")
-    val bio: String,
+    val bio: String?,
     @JsonProperty("twitter_username")
     val twitterUsername: Any? = null,
     @JsonProperty("public_repos")
-    val publicRepos: Long,
+    val publicRepos: Long?,
     @JsonProperty("public_gists")
-    val publicGists: Long,
+    val publicGists: Long?,
     @JsonProperty("followers")
-    val followers: Long,
+    val followers: Long?,
     @JsonProperty("following")
-    val following: Long,
+    val following: Long?,
     @JsonProperty("created_at")
-    val createdAt: String,
+    val createdAt: String?,
     @JsonProperty("updated_at")
-    val updatedAt: String,
+    val updatedAt: String?,
     @JsonProperty("private_gists")
-    val privateGists: Long,
+    val privateGists: Long?,
     @JsonProperty("total_private_repos")
-    val totalPrivateRepos: Long,
+    val totalPrivateRepos: Long?,
     @JsonProperty("owned_private_repos")
-    val ownedPrivateRepos: Long,
+    val ownedPrivateRepos: Long?,
     @JsonProperty("disk_usage")
-    val diskUsage: Long,
+    val diskUsage: Long?,
     @JsonProperty("collaborators")
     val collaborators: Long?,
     @JsonProperty("two_factor_authentication")
-    val twoFactorAuthentication: Boolean,
+    val twoFactorAuthentication: Boolean?,
     @JsonProperty("plan")
     val plan: Plan?
 ) {
