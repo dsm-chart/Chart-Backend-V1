@@ -1,9 +1,12 @@
 package com.chart.chart.domain.post.controller
 
+import com.chart.chart.domain.post.data.dto.QuestionDto
+import com.chart.chart.domain.post.data.entity.Question
 import com.chart.chart.domain.post.data.request.CreateQuestionRequest
 import com.chart.chart.domain.post.data.request.EditQuestionRequest
 import com.chart.chart.domain.post.data.response.MaximumQuestionListResponse
 import com.chart.chart.domain.post.data.response.MaximumQuestionResponse
+import com.chart.chart.domain.post.repository.QuestionSupportImpl
 import com.chart.chart.domain.post.service.QuestionService
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
@@ -12,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/question")
 class QuestionController(
-    private val questionService: QuestionService
+    private val questionService: QuestionService,
+    private val questionSupportImpl: QuestionSupportImpl
 ) {
 
     @GetMapping("/{id}")
@@ -45,6 +49,10 @@ class QuestionController(
         return questionService.deleteQuestion(id)
     }
 
+    @GetMapping("/test")
+    fun test(): List<MaximumQuestionResponse> {
+        return questionSupportImpl.getQuestionList().stream().map(Question::toMaximumQuestionResponse).toList()
+    }
 
 
 

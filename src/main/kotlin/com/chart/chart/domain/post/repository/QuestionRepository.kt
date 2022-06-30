@@ -6,7 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface QuestionRepository: JpaRepository<Question, String> {
+interface QuestionRepository: JpaRepository<Question, String>, QuestionSupport {
 
     fun findAllByWriter(writer: User, page: PageRequest): Page<Question>
+
+
+
 }

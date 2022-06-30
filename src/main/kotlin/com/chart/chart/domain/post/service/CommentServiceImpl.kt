@@ -30,7 +30,6 @@ class CommentServiceImpl(
     override fun getCommentList(targetPostId: String): List<MinimumCommentResponse> {
         val targetPost = questionRepository.findById(targetPostId).orElse(null)?: throw PostNotFoundException(targetPostId)
         val commentList = commentRepository.findAllByTargetPost(targetPost)
-        if (commentList.isEmpty) throw AnyCommentNotExistsException("NULL")
         return commentList.stream().map { it.toMinimumCommentResponse() }.toList()
     }
 

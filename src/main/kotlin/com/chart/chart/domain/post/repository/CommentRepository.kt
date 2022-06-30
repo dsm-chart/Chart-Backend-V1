@@ -8,6 +8,6 @@ import java.util.*
 
 interface CommentRepository: JpaRepository<Comment, String> {
 
-    fun findAllByTargetPost(post: Post): Optional<Comment>
+    fun findAllByTargetPost(post: Post): List<Comment>
     fun findByIdAndWriter(id: String, writer: User): Optional<Comment>
 }
